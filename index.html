@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crea tu tienda online — Minicurso Tiendanube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --nube-blue:   #2C3357;
+      --nimbus-blue: #006BC8;
+      --sky-blue:    #00B4E6;
+      --light-blue:  #BCDFFD;
+      --clear-blue:  #DEEFFE;
+      --white:       #FFFFFF;
+      --gray-text:   #343537;
+      --gradient:    linear-gradient(135deg, #2C3357, #006BC8);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--gray-text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── FADE-IN ANIMATION ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    .hero {
+      background: var(--gradient);
+      padding: 64px 24px 72px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+    .logo-symbol {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 300;
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0.92;
+    }
+
+    /* ══════════════════════════
+       DISCOUNT BANNER
+    ══════════════════════════ */
+    .discount-banner {
+      background: var(--clear-blue);
+      padding: 40px 24px;
+    }
+
+    .banner-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      border-left: 4px solid var(--nimbus-blue);
+      padding-left: 20px;
+    }
+
+    .banner-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .banner-text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--nube-blue);
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════
+       MINICURSO SECTION
+    ══════════════════════════ */
+    .minicurso {
+      background: var(--white);
+      padding: 72px 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--nube-blue);
+      margin-bottom: 10px;
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--gray-text);
+      opacity: 0.8;
+    }
+
+    .accordion-wrap {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── ACCORDION ── */
+    .accordion {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(44, 51, 87, 0.10);
+    }
+
+    .accordion-btn {
+      width: 100%;
+      background: var(--nube-blue);
+      color: var(--white);
+      border: none;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s;
+    }
+
+    .accordion-btn:hover {
+      background: #232845;
+    }
+
+    .accordion-btn .module-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .module-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .module-count {
+      font-size: 0.8rem;
+      font-weight: 400;
+      opacity: 0.75;
+    }
+
+    .accordion-icon {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+
+    .accordion-btn[aria-expanded="true"] .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      background: var(--clear-blue);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 20px;
+    }
+
+    .accordion-body.open {
+      max-height: 1000px;
+      padding: 20px;
+    }
+
+    /* ── VIDEO CARDS ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .video-card {
+      background: var(--white);
+      border: 1.5px solid var(--light-blue);
+      border-radius: 10px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .video-card:hover {
+      box-shadow: 0 6px 20px rgba(0, 107, 200, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .video-card-icon {
+      font-size: 1.4rem;
+    }
+
+    .video-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--nube-blue);
+      flex: 1;
+    }
+
+    .btn-video {
+      display: inline-block;
+      background: var(--nimbus-blue);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-align: center;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-video:hover {
+      background: #0058a3;
+      transform: scale(1.03);
+    }
+
+    /* ══════════════════════════
+       MATERIAL DE APOYO
+    ══════════════════════════ */
+    .apoyo {
+      background: var(--clear-blue);
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .apoyo h2 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--nube-blue);
+      margin-bottom: 12px;
+    }
+
+    .apoyo p {
+      font-size: 1rem;
+      color: var(--gray-text);
+      opacity: 0.8;
+      margin-bottom: 32px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-apoyo {
+      display: inline-block;
+      background: var(--nimbus-blue);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: 8px;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(0, 107, 200, 0.25);
+    }
+
+    .btn-apoyo:hover {
+      background: #0058a3;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 107, 200, 0.35);
+    }
+
+    /* ══════════════════════════
+       FOOTER
+    ══════════════════════════ */
+    footer {
+      background: var(--nube-blue);
+      color: var(--white);
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 0.95rem;
+    }
+
+    footer p {
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    footer a {
+      color: var(--sky-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    footer a:hover {
+      opacity: 0.75;
+    }
+
+    /* ══════════════════════════
+       RESPONSIVE
+    ══════════════════════════ */
+    @media (max-width: 640px) {
+      .hero {
+        padding: 48px 20px 56px;
+      }
+
+      .banner-inner {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .accordion-btn {
+        padding: 16px 18px;
+      }
+
+      .accordion-body.open {
+        padding: 16px;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-apoyo {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HERO ══ -->
+  <header class="hero">
+    <div class="logo fade-in">
+      <span class="logo-symbol">∞</span>
+      <span>tiendanube</span>
+    </div>
+    <h1 class="fade-in">¡Gracias por ser parte del webinar! 🎉</h1>
+    <p class="fade-in">Aquí tienes todo lo que necesitas para crear tu tienda online</p>
+  </header>
+
+  <!-- ══ BANNER DESCUENTO ══ -->
+  <section class="discount-banner">
+    <div class="banner-inner fade-in">
+      <span class="banner-icon">🎁</span>
+      <p class="banner-text">
+        Recuerda que en tu correo tienes el link para redimir tu descuento exclusivo de Tiendanube
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ MINICURSO ══ -->
+  <section class="minicurso">
+    <div class="section-header fade-in">
+      <h2>Tu minicurso: Crea tu tienda online paso a paso</h2>
+      <p>6 videos para que configures tu tienda desde cero</p>
+    </div>
+
+    <div class="accordion-wrap">
+
+      <!-- MÓDULO 1 -->
+      <div class="accordion fade-in">
+        <button class="accordion-btn" aria-expanded="false" aria-controls="mod1-body">
+          <span class="module-meta">
+            <span class="module-title">Módulo 1 — Bienvenida</span>
+            <span class="module-count">1 video</span>
+          </span>
+          <span class="accordion-icon" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="mod1-body" role="region">
+          <div class="video-grid">
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Introducción</span>
+              <a href="https://drive.google.com/drive/folders/1bBTbbRH4zEBaVik9v0yucorCS6Tc8s8J"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO 2 -->
+      <div class="accordion fade-in">
+        <button class="accordion-btn" aria-expanded="false" aria-controls="mod2-body">
+          <span class="module-meta">
+            <span class="module-title">Módulo 2 — Configura tu tienda</span>
+            <span class="module-count">4 videos</span>
+          </span>
+          <span class="accordion-icon" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="mod2-body" role="region">
+          <div class="video-grid">
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Diseño</span>
+              <a href="https://drive.google.com/drive/folders/1DTZc8_1s08y2ENUnd8s3iMvsrm5vQc-2"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Producto</span>
+              <a href="https://drive.google.com/drive/folders/1oQynMzDv0jwYKLh2lNfzz1tbdOX86gpg"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Método de pago</span>
+              <a href="https://drive.google.com/drive/folders/15kLB-hpEamLcJPdWx7CYpLaAf_TmYUXP"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Método de envío</span>
+              <a href="https://drive.google.com/drive/folders/1e3zKdnuMAcAZHdo1vZjuBVtK4eFrZb0J"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO 3 -->
+      <div class="accordion fade-in">
+        <button class="accordion-btn" aria-expanded="false" aria-controls="mod3-body">
+          <span class="module-meta">
+            <span class="module-title">Módulo 3 — Últimos pasos</span>
+            <span class="module-count">1 video</span>
+          </span>
+          <span class="accordion-icon" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="mod3-body" role="region">
+          <div class="video-grid">
+            <div class="video-card">
+              <span class="video-card-icon">🎬</span>
+              <span class="video-card-title">Configuraciones adicionales</span>
+              <a href="https://drive.google.com/drive/folders/18e6UGOw0A3T32KKjrBPLXeHHGDkwlzYZ"
+                 target="_blank" rel="noopener noreferrer" class="btn-video">Ver video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ MATERIAL DE APOYO ══ -->
+  <section class="apoyo">
+    <h2 class="fade-in">📚 Material de apoyo</h2>
+    <p class="fade-in">Recursos adicionales para acompañar tu proceso</p>
+    <a href="https://drive.google.com/drive/folders/1ztXHS3Dc56HgUCpIj90mEMUBuaEvgZtL"
+       target="_blank" rel="noopener noreferrer"
+       class="btn-apoyo fade-in">Ver material</a>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <p>Con 💙 del equipo de Tiendanube Colombia</p>
+    <a href="https://www.tiendanube.com.co" target="_blank" rel="noopener noreferrer">
+      tiendanube.com.co
+    </a>
+  </footer>
+
+  <script>
+    // ── ACCORDION ──
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const bodyId = btn.getAttribute('aria-controls');
+        const body   = document.getElementById(bodyId);
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        // Cerrar todos
+        document.querySelectorAll('.accordion-btn').forEach(b => {
+          b.setAttribute('aria-expanded', 'false');
+        });
+        document.querySelectorAll('.accordion-body').forEach(b => {
+          b.classList.remove('open');
+        });
+
+        // Abrir el seleccionado si estaba cerrado
+        if (!isOpen) {
+          btn.setAttribute('aria-expanded', 'true');
+          body.classList.add('open');
+        }
+      });
+    });
+
+    // ── FADE-IN ON SCROLL ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
